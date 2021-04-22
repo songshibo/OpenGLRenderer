@@ -1,7 +1,4 @@
 #include <iostream>
-#define GLFW_INCLUDE_NONE
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
 #include <Eigen/Core>
 #include <imgui.h>
 #include <backends/imgui_impl_glfw.h>
@@ -9,6 +6,10 @@
 
 #include <Core/Log.h>
 #include <Core/shader.h>
+
+#define GLFW_INCLUDE_NONE
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
 using namespace std;
 
