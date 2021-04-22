@@ -1,5 +1,8 @@
 #include <iostream>
 #include <Eigen/Core>
+#define GLFW_INCLUDE_NONE
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
 typedef Eigen::Matrix<double, 4, 1> double4;
 

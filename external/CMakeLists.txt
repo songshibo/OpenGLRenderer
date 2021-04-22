@@ -2,17 +2,13 @@
 add_library(glad glad/src/glad.c)
 target_include_directories(glad PUBLIC glad/include)
 
-#glfw
-if(APPLE)
-    # TODO
-elseif(WIN32)
-    set( ENKITS_BUILD_EXAMPLES OFF CACHE BOOL "Build basic example applications" )
-    set( GLFW_BUILD_EXAMPLES OFF CACHE BOOL  "GLFW lib only" )
-    set( GLFW_BUILD_TESTS OFF CACHE BOOL  "GLFW lib only" )
-    set( GLFW_BUILD_DOCS OFF CACHE BOOL  "GLFW lib only" )
-    set( GLFW_BUILD_INSTALL OFF CACHE BOOL  "GLFW lib only" )
-    add_subdirectory(glfw)
-endif()
+# glfw (On MacOSX pls use Clang to compiile)
+set( ENKITS_BUILD_EXAMPLES OFF CACHE BOOL "Build basic example applications" )
+set( GLFW_BUILD_EXAMPLES OFF CACHE BOOL  "GLFW lib only" )
+set( GLFW_BUILD_TESTS OFF CACHE BOOL  "GLFW lib only" )
+set( GLFW_BUILD_DOCS OFF CACHE BOOL  "GLFW lib only" )
+set( GLFW_BUILD_INSTALL OFF CACHE BOOL  "GLFW lib only" )
+add_subdirectory(glfw)
 
 #imgui
 set(IMGUI_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/imgui)
