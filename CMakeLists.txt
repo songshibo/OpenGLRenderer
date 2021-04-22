@@ -1,0 +1,25 @@
+cmake_minimum_required(VERSION 3.17)
+project(Renderer)
+set(CMAKE_CXX_STANDARD 17)
+
+configure_file(src/Config/Config.h.in src/Config/Config.h)
+include_directories(${CMAKE_BINARY_DIR}/src/Config)
+
+add_executable(main src/main.cpp)
+add_subdirectory(external)
+
+set(OpenGL )
+if(APPLE)
+    INCLUDE_DIRECTORIES(/System/Library/Frameworks)
+    FIND_LIBRARY(COCOA_LIBRARY Cocoa)
+    FIND_LIBRARY(OpenGL_LIBRARY OpenGL)
+    FIND_LIBRARY(IOKit_LIBRARY IOKit)
+    FIND_LIBRARY(CoreVideo_LIBRARY CoreVideo)
+    MARK_AS_ADVANCED(COCOA_LIBRARY OpenGL_LIBRARY)
+    set(OpenGL ${OpenGL} ${COCOA_LIBRARY} ${IOKit_LIBRARY} ${OpenGL_LIBRARY} ${CoreVideo_LIBRARY})
+elseif(WIN32)
+    find_package(OpenGL REQUIRED)
+    set(OpenGL ${OpenGL} opengl32)
+endif()
+
+target_link_libraries(main ${OpenGL} glad glfw imgui spdlog eigen)
