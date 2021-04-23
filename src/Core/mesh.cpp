@@ -1,20 +1,16 @@
-#include "Mesh.h"
+#include "mesh.h"
 
 using namespace std;
 
-Mesh::Mesh(vector<Vertex> vertices, vector<uint32_t> indices, std::vector<Texture> textures)
+Mesh::Mesh(vector<Vertex> verts, vector<uint32_t> faces)
 {
-    this->vertices = vertices;
-    this->indices = indices;
-    this->textures = textures;
+    this->vertices = verts;
+    this->indices = faces;
     SetUp();
 }
 
 Mesh::~Mesh()
 {
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &EBO);
 }
 
 void Mesh::Draw(Shader &shader, GLenum drawMode)
@@ -38,7 +34,7 @@ void Mesh::SetUp()
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(uint32_t), &indices[0], GL_STATIC_DRAW);
 
     // set the vertex attribute pointers
     // vertex Positions

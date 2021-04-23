@@ -35,9 +35,8 @@ class Mesh
 public:
     vector<Vertex> vertices;
     vector<uint32_t> indices;
-    vector<Texture> textures;
     GLuint VAO;
-    Mesh(vector<Vertex> vertices, vector<uint32_t> indices, std::vector<Texture> textures);
+    Mesh(vector<Vertex> verts, vector<uint32_t> faces);
     virtual ~Mesh();
     void Draw(Shader &shader, GLenum drawMode = GL_TRIANGLES);
 

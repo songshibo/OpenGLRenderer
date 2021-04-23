@@ -24,6 +24,28 @@ target_include_directories(spdlog INTERFACE
     spdlog/include
 )
 
+set(opengl  PARENT_SCOPE)
+# Handle OpenGL libraries on MacOS and Windows
+if(APPLE)
+    # Extra libraries for OpenGL
+    include_directories(/System/Library/Frameworks)
+    find_library(COCOA_LIBRARY Cocoa)
+    find_library(OpenGL_LIBRARY OpenGL)
+    find_library(IOKit_LIBRARY IOKit)
+    find_library(CoreVideo_LIBRARY CoreVideo)
+    mark_as_advanced(COCOA_LIBRARY OpenGL_LIBRARY)
+    set(opengl ${opengl} ${COCOA_LIBRARY} ${IOKit_LIBRARY} ${OpenGL_LIBRARY} ${CoreVideo_LIBRARY})
+elseif(WIN32)
+    # load system opengl library
+    find_package(OpenGL REQUIRED)
+    set(opengl ${opengl} opengl32)
+endif()
+
+# Assimp
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake-modules" ${CMAKE_MODULE_PATH})
+find_package(ASSIMP REQUIRED)
+set(assimp_includes ${ASSIMP_INCLUDE_DIR} PARENT_SCOPE)
+
 #imgui
 add_library(imgui
     ./imgui/imgui.cpp
@@ -42,4 +64,4 @@ add_library(imgui
 target_include_directories(imgui PUBLIC ./imgui)
 target_include_directories(imgui PUBLIC ./imgui/backends)
 target_compile_definitions(imgui PUBLIC -DIMGUI_IMPL_OPENGL_LOADER_GLAD)
-target_link_libraries(imgui PRIVATE glad glfw)
+target_link_libraries(imgui PRIVATE glad glfw ${libs} ${ASSIMP_LIBRARIES})

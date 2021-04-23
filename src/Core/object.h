@@ -3,6 +3,9 @@
 #include <glad/glad.h>
 #include <Eigen/Core>
 #include <Eigen/Geometry>
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
 #include <Core/Log.h>
 #include <Core/shader.h>
@@ -32,14 +35,14 @@ public:
     quaternion rotation;
     float3 scale;
 
-    Object(string const &path);
-    void Draw();
-    void Draw(Shader &drawShader);
+    Object(string const &path, float3 worldPos = float3::Zero(), quaternion localRot = quaternion::Identity(), float3 localScale = float3::Ones());
+    void Draw(GLenum drawMode = GL_TRIANGLES);
+    void Draw(Shader &drawShader, GLenum drawMode = GL_TRIANGLES);
+    // Assemble model matrix
+    float4x4 model();
 
 private:
     void loadModel(string const &path);
-    void processNode();
-    Mesh processMesh();
-    // Assemble model matrix
-    float4x4 model();
+    void processNode(aiNode *node, const aiScene *scene);
+    Mesh processMesh(aiMesh *mesh, const aiScene *scene);
 };

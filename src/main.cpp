@@ -9,6 +9,7 @@
 #include <Core/shader.h>
 #include <Core/camera.h>
 #include <Core/mesh.h>
+#include <Core/object.h>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -38,16 +39,6 @@ int main()
 {
     Log::Init();
     camera = new FpsCamera(Eigen::Vector3f(0.0f, 0.0f, 3.0f));
-
-    {
-        Eigen::Vector3f position(0.0f, 0.0f, 0.0f);
-        Eigen::Vector3f scale(1.0f, 1.0f, 1.0f);
-        Eigen::Quaternionf rotation;
-        Eigen::Matrix4f model = Eigen::Matrix4f::Zero();
-        float4x4 model = float4x4::Identity();
-        model.block<3, 3>(0, 0) = rotation.toRotationMatrix() * Scaling(scale);
-        model.col(3) << position, 1.0f;
-    }
 
     glfwSetErrorCallback(glfw_error_callback);
     glfwInit();
@@ -98,57 +89,11 @@ int main()
 
     Shader shader("Assets/shaders/basic.vs", "Assets/shaders/basic.fs");
 
-    float vertices[] = {
-        -0.5f, -0.5f, -0.5f,
-        0.5f, -0.5f, -0.5f,
-        0.5f, 0.5f, -0.5f,
-        0.5f, 0.5f, -0.5f,
-        -0.5f, 0.5f, -0.5f,
-        -0.5f, -0.5f, -0.5f,
-
-        -0.5f, -0.5f, 0.5f,
-        0.5f, -0.5f, 0.5f,
-        0.5f, 0.5f, 0.5f,
-        0.5f, 0.5f, 0.5f,
-        -0.5f, 0.5f, 0.5f,
-        -0.5f, -0.5f, 0.5f,
-
-        -0.5f, 0.5f, 0.5f,
-        -0.5f, 0.5f, -0.5f,
-        -0.5f, -0.5f, -0.5f,
-        -0.5f, -0.5f, -0.5f,
-        -0.5f, -0.5f, 0.5f,
-        -0.5f, 0.5f, 0.5f,
-
-        0.5f, 0.5f, 0.5f,
-        0.5f, 0.5f, -0.5f,
-        0.5f, -0.5f, -0.5f,
-        0.5f, -0.5f, -0.5f,
-        0.5f, -0.5f, 0.5f,
-        0.5f, 0.5f, 0.5f,
-
-        -0.5f, -0.5f, -0.5f,
-        0.5f, -0.5f, -0.5f,
-        0.5f, -0.5f, 0.5f,
-        0.5f, -0.5f, 0.5f,
-        -0.5f, -0.5f, 0.5f,
-        -0.5f, -0.5f, -0.5f,
-
-        -0.5f, 0.5f, -0.5f,
-        0.5f, 0.5f, -0.5f,
-        0.5f, 0.5f, 0.5f,
-        0.5f, 0.5f, 0.5f,
-        -0.5f, 0.5f, 0.5f,
-        -0.5f, 0.5f, -0.5f};
-
-    unsigned int VBO, VAO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
-    glEnableVertexAttribArray(0);
+    Eigen::Vector3f position(0.0f, 0.0f, 0.0f);
+    Eigen::Vector3f scale(0.5f, 0.5f, 0.5f);
+    Eigen::Quaternionf rotation(0.854f, 0.354f, 0.354f, 0.146f);
+    Object bunny = Object("Assets/models/bunny.obj", position, rotation, scale);
+    bunny.shader = &shader;
 
     while (!glfwWindowShouldClose(window))
     {
@@ -170,9 +115,7 @@ int main()
         shader.use();
         shader.SetFloat4x4("projection", camera->perspective((float)width / (float)height));
         shader.SetFloat4x4("view", camera->view());
-        shader.SetFloat4x4("model", Eigen::Matrix4f::Identity());
-        glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        bunny.Draw();
 
         ImGui::Begin("Basic");
 
@@ -193,9 +136,6 @@ int main()
 
         glfwSwapBuffers(window);
     }
-
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
 
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
