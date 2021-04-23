@@ -109,32 +109,32 @@ void Shader::SetFloat(const std::string &name, float value) const
     glUniform1f(glGetUniformLocation(programID, name.c_str()), value);
 }
 
-void Shader::SetVec2(const std::string &name, const vec2 &value) const
+void Shader::SetFloat2(const std::string &name, const vec2 &value) const
 {
     glUniform(glGetUniformLocation(programID, name.c_str()), value);
 }
 
-void Shader::SetVec3(const std::string &name, const vec3 &value) const
+void Shader::SetFloat3(const std::string &name, const vec3 &value) const
 {
     Eigen::glUniform(glGetUniformLocation(programID, name.c_str()), value);
 }
 
-void Shader::SetVec4(const std::string &name, const vec4 &value) const
+void Shader::SetFloat4(const std::string &name, const vec4 &value) const
 {
     Eigen::glUniform(glGetUniformLocation(programID, name.c_str()), value);
 }
 
-void Shader::SetMat2(const std::string &name, const mat2 &mat) const
+void Shader::SetFloat2x2(const std::string &name, const mat2 &mat) const
 {
     Eigen::glUniform(glGetUniformLocation(programID, name.c_str()), mat);
 }
 
-void Shader::SetMat3(const std::string &name, const mat3 &mat) const
+void Shader::SetFloat3x3(const std::string &name, const mat3 &mat) const
 {
     Eigen::glUniform(glGetUniformLocation(programID, name.c_str()), mat);
 }
 
-void Shader::SetMat4(const std::string &name, const mat4 &mat) const
+void Shader::SetFloat4x4(const std::string &name, const mat4 &mat) const
 {
     Eigen::glUniform(glGetUniformLocation(programID, name.c_str()), mat);
 }

@@ -29,12 +29,12 @@ public:
     void SetBool(const std::string &name, bool value) const;
     void SetInt(const std::string &name, int value) const;
     void SetFloat(const std::string &name, float value) const;
-    void SetVec2(const std::string &name, const vec2 &value) const;
-    void SetVec3(const std::string &name, const vec3 &value) const;
-    void SetVec4(const std::string &name, const vec4 &value) const;
-    void SetMat2(const std::string &name, const mat2 &mat) const;
-    void SetMat3(const std::string &name, const mat3 &mat) const;
-    void SetMat4(const std::string &name, const mat4 &mat) const;
+    void SetFloat2(const std::string &name, const vec2 &value) const;
+    void SetFloat3(const std::string &name, const vec3 &value) const;
+    void SetFloat4(const std::string &name, const vec4 &value) const;
+    void SetFloat2x2(const std::string &name, const mat2 &mat) const;
+    void SetFloat3x3(const std::string &name, const mat3 &mat) const;
+    void SetFloat4x4(const std::string &name, const mat4 &mat) const;
 
 private:
     GLuint programID;
