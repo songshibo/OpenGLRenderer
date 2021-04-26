@@ -58,7 +58,7 @@ void Object::loadModel(string const &path)
     // remember macos don't need to aiProcess_FlipUVs
 #ifdef __APPLE__
     const aiScene *scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_CalcTangentSpace);
-#elif
+#elif _WIN32
     const aiScene *scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
 #endif
 
