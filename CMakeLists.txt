@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.17)
-project(Renderer)
+project(OpenGLRenderer)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -29,6 +29,14 @@ file(GLOB_RECURSE HEADER_FILES
 	${CMAKE_SOURCE_DIR}/src/*.hpp
 )
 
-add_executable(main ${HEADER_FILES} ${SOURCE_FILES})
+add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
 # imgui contains assimp
-target_link_libraries(main imgui glad glfw spdlog eigen ${opengl} ${assimp_libs})
+target_link_libraries(${PROJECT_NAME} imgui glad glfw spdlog eigen ${opengl} ${assimp_libs})
+
+# Copy dlls
+if(WIN32)
+	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy_directory
+		"${PROJECT_SOURCE_DIR}/external/assimp-static/dlls"
+		$<TARGET_FILE_DIR:${PROJECT_NAME}>)
+endif()
