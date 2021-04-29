@@ -45,6 +45,7 @@ endif()
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake-modules" ${CMAKE_MODULE_PATH})
 find_package(ASSIMP REQUIRED)
 set(assimp_includes ${ASSIMP_INCLUDE_DIR} PARENT_SCOPE)
+set(assimp ${ASSIMP_LIBRARIES} PARENT_SCOPE)
 
 #imgui
 add_library(imgui
@@ -64,4 +65,4 @@ add_library(imgui
 target_include_directories(imgui PUBLIC ./imgui)
 target_include_directories(imgui PUBLIC ./imgui/backends)
 target_compile_definitions(imgui PUBLIC -DIMGUI_IMPL_OPENGL_LOADER_GLAD)
-target_link_libraries(imgui PRIVATE glad glfw ${libs} ${ASSIMP_LIBRARIES})
+target_link_libraries(imgui PRIVATE glad glfw)

@@ -31,4 +31,4 @@ file(GLOB_RECURSE HEADER_FILES
 
 add_executable(main ${HEADER_FILES} ${SOURCE_FILES})
 # imgui contains assimp
-target_link_libraries(main imgui glad glfw spdlog eigen ${opengl})
+target_link_libraries(main imgui glad glfw spdlog eigen ${opengl} ${assimp})
