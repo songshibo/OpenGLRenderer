@@ -42,10 +42,25 @@ elseif(WIN32)
 endif()
 
 # Assimp
-set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake-modules" ${CMAKE_MODULE_PATH})
-find_package(ASSIMP REQUIRED)
-set(assimp_includes ${ASSIMP_INCLUDE_DIR} PARENT_SCOPE)
-set(assimp ${ASSIMP_LIBRARIES} PARENT_SCOPE)
+if(APPLE)
+    set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake-modules" ${CMAKE_MODULE_PATH})
+    find_package(ASSIMP REQUIRED)
+    set(assimp_includes ${ASSIMP_INCLUDE_DIR} PARENT_SCOPE)
+    set(assimp_libs ${ASSIMP_LIBRARIES} PARENT_SCOPE)
+elseif(WIN32)
+    find_path( ASSIMP_INCLUDE_DIR assimp/mesh.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/assimp-static/include
+    )
+    find_library( ASSIMP_LIBRARY assimp
+        ${CMAKE_CURRENT_SOURCE_DIR}/assimp-static/lib
+    )
+    if(ASSIMP_INCLUDE_DIR AND ASSIMP_LIBRARY)
+	    message(STATUS "Found Assimp in ${ASSIMP_INCLUDE_DIR}")
+        set(assimp_includes ${ASSIMP_INCLUDE_DIR} PARENT_SCOPE)
+        set(assimp_libs ${ASSIMP_LIBRARY} PARENT_SCOPE)
+    endif()
+endif()
+
 
 #imgui
 add_library(imgui
